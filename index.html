@@ -10,17 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Barlow+Condensed:ital,wght@0,400;0,700;1,800&display=swap" rel="stylesheet">
 
   <style>
-    :root {
+    :root{
+      /* Accent */
       --green: #1aff5a;
-      --green-dim: #00c940;
-      --green-glow: rgba(26,255,90,0.18);
-      --green-border: rgba(26,255,90,0.28);
-      --bg: #070d08;
-      --surface: #0d1a0f;
-      --surface2: #101f12;
-      --text: #e8f5ea;
-      --muted: #7a9a7e;
-      --dimmer: #3e5a42;
+      --green-dim: #00d34a;
+
+      /* Glow + borders */
+      --green-glow: rgba(26,255,90,0.22);
+      --green-border: rgba(26,255,90,0.30);
+
+      /* LIGHTER dark-mode stack (charcoal, not black) */
+      --bg: #101614;
+      --surface: #171f1c;
+      --surface2: #1c2622;
+
+      /* Text */
+      --text: #f2fbf4;
+      --muted: #b8cfc0;
+      --dimmer: #8fb19a;
+
       --danger: #ff6b6b;
     }
 
@@ -37,14 +45,14 @@
     .bg-layer {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(26,255,90,0.07) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(0,120,40,0.08) 0%, transparent 55%);
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(26,255,90,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(26,255,90,0.06) 0%, transparent 55%);
     }
     .grid-lines {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image:
-        linear-gradient(rgba(26,255,90,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(26,255,90,0.03) 1px, transparent 1px);
+        linear-gradient(rgba(26,255,90,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,255,90,0.035) 1px, transparent 1px);
       background-size: 48px 48px;
     }
 
@@ -72,7 +80,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(26,255,90,0.1);
+      background: rgba(26,255,90,0.10);
       border: 1px solid var(--green-border);
       border-radius: 100px;
       padding: 6px 14px;
@@ -84,6 +92,7 @@
       color: var(--green);
       margin-bottom: 28px;
       width: fit-content;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
     .blw-tag::before {
       content: '';
@@ -103,6 +112,7 @@
       line-height: 0.9;
       color: #fff;
       margin-bottom: 6px;
+      text-shadow: 0 12px 30px rgba(0,0,0,0.35);
     }
     .event-title .accent { color: var(--green); }
     .event-sub {
@@ -113,6 +123,7 @@
       color: #f5f0d8;
       line-height: 1;
       margin-bottom: 10px;
+      text-shadow: 0 12px 30px rgba(0,0,0,0.25);
     }
     .event-host {
       font-family: 'Barlow', sans-serif;
@@ -134,9 +145,9 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(26,255,90,0.06);
-      border: 1px solid var(--green-border);
-      border-radius: 8px;
+      background: rgba(26,255,90,0.07);
+      border: 1px solid rgba(26,255,90,0.22);
+      border-radius: 10px;
       padding: 12px 16px;
     }
     .info-pill .icon { font-size: 18px; flex-shrink: 0; }
@@ -145,7 +156,7 @@
       color: var(--dimmer);
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      font-weight: 700;
+      font-weight: 800;
       display: block;
       margin-bottom: 2px;
     }
@@ -172,19 +183,20 @@
     }
 
     .form-card {
-      background: var(--surface);
-      border: 1px solid var(--green-border);
+      background: rgba(23,31,28,0.92);
+      border: 1px solid rgba(26,255,90,0.24);
       border-radius: 16px;
       padding: 40px 36px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.42);
     }
     .form-card::before {
       content: '';
       position: absolute;
       top: -40px; right: -40px;
       width: 180px; height: 180px;
-      background: radial-gradient(circle, rgba(26,255,90,0.1) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(26,255,90,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -194,6 +206,7 @@
       color: #fff;
       letter-spacing: 1px;
       margin-bottom: 4px;
+      text-shadow: 0 10px 26px rgba(0,0,0,0.25);
     }
     .form-sub {
       font-size: 13px;
@@ -211,8 +224,8 @@
     .step-dot {
       width: 28px; height: 28px;
       border-radius: 50%;
-      background: var(--surface2);
-      border: 2px solid var(--green-border);
+      background: rgba(28,38,34,0.96);
+      border: 2px solid rgba(26,255,90,0.22);
       color: var(--muted);
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
@@ -227,14 +240,14 @@
       color: #041a08;
     }
     .step-dot.done {
-      background: rgba(26,255,90,0.15);
+      background: rgba(26,255,90,0.16);
       border-color: var(--green);
       color: var(--green);
     }
     .step-line {
       flex: 1;
       height: 2px;
-      background: var(--green-border);
+      background: rgba(26,255,90,0.18);
       transition: background 0.4s ease;
     }
     .step-line.done { background: var(--green); }
@@ -257,10 +270,10 @@
     label {
       display: block;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--dimmer);
       margin-bottom: 7px;
     }
 
@@ -270,8 +283,8 @@
     select,
     textarea {
       width: 100%;
-      background: var(--surface2);
-      border: 1.5px solid rgba(26,255,90,0.18);
+      background: rgba(28,38,34,0.96);
+      border: 1.5px solid rgba(26,255,90,0.20);
       border-radius: 8px;
       padding: 12px 14px;
       color: var(--text);
@@ -281,13 +294,13 @@
       transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
       -webkit-appearance: none;
     }
-    input::placeholder, textarea::placeholder { color: #3a5040; }
+    input::placeholder, textarea::placeholder { color: rgba(242,251,244,0.35); }
     input:focus, select:focus, textarea:focus {
       border-color: var(--green);
-      background: rgba(26,255,90,0.04);
-      box-shadow: 0 0 0 3px rgba(26,255,90,0.08);
+      background: rgba(26,255,90,0.06);
+      box-shadow: 0 0 0 3px rgba(26,255,90,0.10);
     }
-    select option { background: #0d1a0f; }
+    select option { background: #171f1c; }
     textarea { resize: none; height: 90px; }
 
     .role-grid {
@@ -302,19 +315,22 @@
     .role-card { position: relative; cursor: pointer; }
     .role-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
     .role-card .card-inner {
-      background: var(--surface2);
-      border: 1.5px solid rgba(26,255,90,0.18);
+      background: rgba(28,38,34,0.96);
+      border: 1.5px solid rgba(26,255,90,0.20);
       border-radius: 10px;
       padding: 14px;
       text-align: center;
       transition: all 0.2s ease;
       cursor: pointer;
     }
-    .role-card .card-inner:hover { border-color: rgba(26,255,90,0.45); background: rgba(26,255,90,0.04); }
+    .role-card .card-inner:hover {
+      border-color: rgba(26,255,90,0.45);
+      background: rgba(26,255,90,0.06);
+    }
     .role-card input:checked + .card-inner {
       border-color: var(--green);
-      background: rgba(26,255,90,0.09);
-      box-shadow: 0 0 0 1px var(--green);
+      background: rgba(26,255,90,0.12);
+      box-shadow: 0 0 0 1px rgba(26,255,90,0.55);
     }
     .role-card .card-icon { font-size: 22px; margin-bottom: 6px; }
     .role-card .card-label {
@@ -337,9 +353,9 @@
       -webkit-appearance: none;
       width: 18px; height: 18px;
       min-width: 18px;
-      border: 1.5px solid var(--green-border);
+      border: 1.5px solid rgba(26,255,90,0.26);
       border-radius: 4px;
-      background: var(--surface2);
+      background: rgba(28,38,34,0.96);
       cursor: pointer;
       margin-top: 1px;
       transition: all 0.2s;
@@ -354,7 +370,7 @@
       transform: translate(-50%,-50%);
       color: #041a08;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
     }
     .check-group .check-label {
       font-size: 13px;
@@ -370,7 +386,7 @@
       flex: 0;
       padding: 13px 20px;
       background: transparent;
-      border: 1.5px solid var(--green-border);
+      border: 1.5px solid rgba(26,255,90,0.22);
       border-radius: 8px;
       color: var(--muted);
       font-family: 'Barlow Condensed', sans-serif;
@@ -391,20 +407,20 @@
       border-radius: 8px;
       color: #041a08;
       font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 16px;
       letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.25s;
-      box-shadow: 0 4px 20px rgba(26,255,90,0.22);
+      box-shadow: 0 8px 32px rgba(26,255,90,0.26);
     }
-    .btn-next:hover, .btn-submit:hover { box-shadow: 0 6px 30px rgba(26,255,90,0.38); transform: translateY(-1px); }
+    .btn-next:hover, .btn-submit:hover { box-shadow: 0 12px 46px rgba(26,255,90,0.40); transform: translateY(-1px); }
     .btn-next:active, .btn-submit:active { transform: translateY(0); }
 
     .progress-bar {
       height: 3px;
-      background: rgba(26,255,90,0.12);
+      background: rgba(26,255,90,0.14);
       border-radius: 4px;
       margin-bottom: 22px;
       overflow: hidden;
@@ -414,7 +430,7 @@
       background: var(--green);
       border-radius: 4px;
       transition: width 0.4s ease;
-      box-shadow: 0 0 8px var(--green);
+      box-shadow: 0 0 10px rgba(26,255,90,0.55);
     }
 
     .success-screen {
@@ -431,15 +447,15 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 32px;
       margin: 0 auto 24px;
-      box-shadow: 0 0 40px rgba(26,255,90,0.3);
+      box-shadow: 0 0 52px rgba(26,255,90,0.34);
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #fff; margin-bottom: 10px; }
     .success-msg { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
     .success-detail {
-      background: rgba(26,255,90,0.06);
-      border: 1px solid var(--green-border);
+      background: rgba(26,255,90,0.07);
+      border: 1px solid rgba(26,255,90,0.24);
       border-radius: 10px;
       padding: 16px;
       font-size: 13px;
@@ -479,18 +495,20 @@
       <div class="event-sub">Game</div>
       <div class="event-host">with Pastor IK</div>
 
-      <div style="border-left:2px solid var(--green);padding:12px 16px;background:rgba(26,255,90,0.05);border-radius:0 8px 8px 0;margin-bottom:22px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:7px;">3 John 1:2</div>
-        <p style="font-family:'Barlow',sans-serif;font-size:14px;font-style:italic;font-weight:600;color:#e8f5ea;line-height:1.6;margin:0;">"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."</p>
+      <div style="border-left:2px solid var(--green);padding:12px 16px;background:rgba(26,255,90,0.06);border-radius:0 8px 8px 0;margin-bottom:22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:7px;">3 John 1:2</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:14px;font-style:italic;font-weight:600;color:var(--text);line-height:1.6;margin:0;">
+          "Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."
+        </p>
       </div>
 
       <p style="font-family:'Barlow',sans-serif;font-size:14px;line-height:1.8;color:var(--muted);margin:0 0 16px 0;">
         It is the will of the Lord for you to prosper. But there are key principles you need to know to step into your inheritance.
       </p>
 
-      <div style="background:#080f09;border:1px solid rgba(26,255,90,0.15);border-radius:8px;padding:16px 18px;margin-bottom:22px;">
-        <p style="font-family:'Barlow',sans-serif;font-size:13px;line-height:1.7;color:#7a9a7e;margin:0;">
-          A child bequeathed <strong style="color:#e8f5ea;">millions</strong> but who doesn't know how to redeem the will — cannot access it. Don't let that be you.
+      <div style="background:rgba(0,0,0,0.12);border:1px solid rgba(26,255,90,0.18);border-radius:10px;padding:16px 18px;margin-bottom:22px;">
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;line-height:1.7;color:var(--muted);margin:0;">
+          A child bequeathed <strong style="color:var(--text);">millions</strong> but who doesn't know how to redeem the will — cannot access it. Don't let that be you.
         </p>
       </div>
 
@@ -642,7 +660,6 @@
           </div>
           <div class="field-error" id="roleErr" style="margin-bottom:10px;">Please select your role.</div>
 
-          <!-- ✅ UPDATED: OPTIONAL + OTHER (TYPE) -->
           <div class="field-group">
             <label for="finGoal">
               What's your #1 money goal right now?
@@ -703,9 +720,7 @@
         <div class="success-screen" id="successScreen">
           <div class="success-icon">🎉</div>
           <div class="success-title">You're In!</div>
-          <p class="success-msg">
-            You're registered! See you Wednesday at 7PM CST.
-          </p>
+          <p class="success-msg">You're registered! See you Wednesday at 7PM CST.</p>
 
           <div class="success-detail" style="text-align:left;margin-bottom:18px;">
             <strong>📅 Starts:</strong> Wednesday, February 18, 2026<br>
@@ -716,7 +731,7 @@
           </div>
 
           <a href="https://arizona.zoom.us/j/9780367559" id="zoomJoinBtn" target="_blank" rel="noopener"
-             style="display:block;background:linear-gradient(135deg,#1aff5a 0%,#00c940 100%);color:#041a08;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:15px 24px;border-radius:8px;margin-bottom:12px;text-align:center;box-shadow:0 4px 20px rgba(26,255,90,0.25);">
+             style="display:block;background:linear-gradient(135deg,#1aff5a 0%,#00d34a 100%);color:#041a08;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:15px 24px;border-radius:8px;margin-bottom:12px;text-align:center;box-shadow:0 8px 32px rgba(26,255,90,0.28);">
             🎥 Join on Zoom →
           </a>
 
@@ -842,8 +857,8 @@
       const goalOther = (document.getElementById('finGoalOther')?.value || "").trim();
 
       let finGoalFinal = goalSel;
-      if (!goalSel) finGoalFinal = "";               // skipped
-      if (goalSel === "other") finGoalFinal = goalOther || ""; // typed goal
+      if (!goalSel) finGoalFinal = "";                         // skipped
+      if (goalSel === "other") finGoalFinal = goalOther || "";  // typed goal
 
       return {
         firstName: document.getElementById('firstName').value.trim(),
@@ -914,9 +929,9 @@
         left: '50%',
         bottom: '28px',
         transform: 'translateX(-50%)',
-        background: 'rgba(10,20,12,0.96)',
-        border: '1px solid rgba(26,255,90,0.35)',
-        color: '#e8f5ea',
+        background: 'rgba(23,31,28,0.96)',
+        border: '1px solid rgba(26,255,90,0.30)',
+        color: 'var(--text)',
         padding: '13px 20px',
         borderRadius: '10px',
         fontFamily: 'Barlow, Arial, sans-serif',
@@ -925,7 +940,7 @@
         zIndex: '9999',
         maxWidth: '90vw',
         textAlign: 'center',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.55)',
         transition: 'opacity 0.3s ease'
       });
       document.body.appendChild(toast);
