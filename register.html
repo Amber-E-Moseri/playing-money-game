@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Playing the Money Game | BLW Canada</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Barlow+Condensed:ital,wght@0,400;0,700;1,800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #1aff5a;
+      --green-dim: #00c940;
+      --green-glow: rgba(26,255,90,0.18);
+      --green-border: rgba(26,255,90,0.28);
+      --bg: #070d08;
+      --surface: #0d1a0f;
+      --surface2: #101f12;
+      --text: #e8f5ea;
+      --muted: #7a9a7e;
+      --dimmer: #3e5a42;
+      --danger: #ff6b6b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(26,255,90,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(0,120,40,0.08) 0%, transparent 55%);
+    }
+    .grid-lines {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26,255,90,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,255,90,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .page {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 48px 60px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .blw-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(26,255,90,0.1);
+      border: 1px solid var(--green-border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+    .blw-tag::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .event-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 6vw, 78px);
+      line-height: 0.9;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .event-title .accent { color: var(--green); }
+    .event-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-style: italic;
+      font-weight: 800;
+      font-size: clamp(40px, 5vw, 58px);
+      color: #f5f0d8;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .event-host {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--green);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    .info-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .info-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(26,255,90,0.06);
+      border: 1px solid var(--green-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .info-pill .icon { font-size: 18px; flex-shrink: 0; }
+    .info-pill .label {
+      font-size: 11px;
+      color: var(--dimmer);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .info-pill .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .trust-line {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      border-left: 2px solid var(--green);
+      padding-left: 14px;
+    }
+    .trust-line strong { color: var(--green); }
+
+    .right-panel {
+      padding: 60px 0 60px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--green-border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(26,255,90,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .form-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .steps-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+    .step-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--green-border);
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .step-dot.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #041a08;
+    }
+    .step-dot.done {
+      background: rgba(26,255,90,0.15);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--green-border);
+      transition: background 0.4s ease;
+    }
+    .step-line.done { background: var(--green); }
+
+    .form-step { display: none; animation: fadeSlide 0.35s ease; }
+    .form-step.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .field-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid rgba(26,255,90,0.18);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: #3a5040; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green);
+      background: rgba(26,255,90,0.04);
+      box-shadow: 0 0 0 3px rgba(26,255,90,0.08);
+    }
+    select option { background: #0d1a0f; }
+    textarea { resize: none; height: 90px; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .role-grid .role-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .role-grid .role-card:last-child:nth-child(odd) .card-inner { max-width: 50%; margin: 0 auto; }
+
+    .role-card { position: relative; cursor: pointer; }
+    .role-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .role-card .card-inner {
+      background: var(--surface2);
+      border: 1.5px solid rgba(26,255,90,0.18);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .role-card .card-inner:hover { border-color: rgba(26,255,90,0.45); background: rgba(26,255,90,0.04); }
+    .role-card input:checked + .card-inner {
+      border-color: var(--green);
+      background: rgba(26,255,90,0.09);
+      box-shadow: 0 0 0 1px var(--green);
+    }
+    .role-card .card-icon { font-size: 22px; margin-bottom: 6px; }
+    .role-card .card-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.5px;
+    }
+
+    .check-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .check-group input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      min-width: 18px;
+      border: 1.5px solid var(--green-border);
+      border-radius: 4px;
+      background: var(--surface2);
+      cursor: pointer;
+      margin-top: 1px;
+      transition: all 0.2s;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .check-group input[type="checkbox"]:checked { background: var(--green); border-color: var(--green); }
+    .check-group input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      color: #041a08;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .check-group .check-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 400;
+    }
+
+    .btn-row { display: flex; gap: 12px; margin-top: 22px; }
+    .btn-back {
+      flex: 0;
+      padding: 13px 20px;
+      background: transparent;
+      border: 1.5px solid var(--green-border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: var(--green); color: var(--green); }
+
+    .btn-next, .btn-submit {
+      flex: 1;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dim) 100%);
+      border: none;
+      border-radius: 8px;
+      color: #041a08;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(26,255,90,0.22);
+    }
+    .btn-next:hover, .btn-submit:hover { box-shadow: 0 6px 30px rgba(26,255,90,0.38); transform: translateY(-1px); }
+    .btn-next:active, .btn-submit:active { transform: translateY(0); }
+
+    .progress-bar {
+      height: 3px;
+      background: rgba(26,255,90,0.12);
+      border-radius: 4px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+      animation: fadeSlide 0.5s ease;
+    }
+    .success-screen.active { display: block; }
+    .success-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, var(--green), var(--green-dim));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 40px rgba(26,255,90,0.3);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #fff; margin-bottom: 10px; }
+    .success-msg { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+    .success-detail {
+      background: rgba(26,255,90,0.06);
+      border: 1px solid var(--green-border);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .success-detail strong { color: var(--green); }
+
+    .field-error { font-size: 11px; color: var(--danger); margin-top: 5px; display: none; }
+    input.error, select.error, textarea.error { border-color: var(--danger) !important; }
+
+    @media (max-width: 780px) {
+      .page { grid-template-columns: 1fr; }
+      .left-panel { position: static; height: auto; padding: 40px 0 20px; }
+      .right-panel { padding: 0 0 60px; }
+      .field-row { grid-template-columns: 1fr; }
+      .role-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .form-card { padding: 28px 20px; }
+      .role-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-layer"></div>
+  <div class="grid-lines"></div>
+
+  <div class="page">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="blw-tag">BLW Canada Presents</div>
+
+      <h1 class="event-title">Playing <span class="accent">the</span><br>MONEY</h1>
+      <div class="event-sub">Game</div>
+      <div class="event-host">with Pastor IK</div>
+
+      <div style="border-left:2px solid var(--green);padding:12px 16px;background:rgba(26,255,90,0.05);border-radius:0 8px 8px 0;margin-bottom:22px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:7px;">3 John 1:2</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:14px;font-style:italic;font-weight:600;color:#e8f5ea;line-height:1.6;margin:0;">"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth."</p>
+      </div>
+
+      <p style="font-family:'Barlow',sans-serif;font-size:14px;line-height:1.8;color:var(--muted);margin:0 0 16px 0;">
+        It is the will of the Lord for you to prosper. But there are key principles you need to know to step into your inheritance.
+      </p>
+
+      <div style="background:#080f09;border:1px solid rgba(26,255,90,0.15);border-radius:8px;padding:16px 18px;margin-bottom:22px;">
+        <p style="font-family:'Barlow',sans-serif;font-size:13px;line-height:1.7;color:#7a9a7e;margin:0;">
+          A child bequeathed <strong style="color:#e8f5ea;">millions</strong> but who doesn't know how to redeem the will — cannot access it. Don't let that be you.
+        </p>
+      </div>
+
+      <div class="info-pills">
+        <div class="info-pill">
+          <div class="icon">📅</div>
+          <div>
+            <span class="label">Duration</span>
+            <span class="value">Feb 18 – Mar 25, 2026</span>
+          </div>
+        </div>
+        <div class="info-pill">
+          <div class="icon">🕖</div>
+          <div>
+            <span class="label">Schedule</span>
+            <span class="value">Every Wednesday · 7PM CST</span>
+          </div>
+        </div>
+        <div class="info-pill">
+          <div class="icon">🎙️</div>
+          <div>
+            <span class="label">Format</span>
+            <span class="value">Live · Interactive · Free</span>
+          </div>
+        </div>
+        <div class="info-pill">
+          <div class="icon">🎥</div>
+          <div>
+            <span class="label">Platform</span>
+            <span class="value" style="color:var(--green);">Zoom — link after registration</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-line">
+        In the next 6 weeks, you will learn the principles for your financial success.
+        <strong>This is what you need for an extremely prosperous 2026.</strong>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="form-card">
+
+        <!-- Steps -->
+        <div class="steps-indicator" id="stepsIndicator">
+          <div class="step-dot active" id="dot1">1</div>
+          <div class="step-line" id="line1"></div>
+          <div class="step-dot" id="dot2">2</div>
+          <div class="step-line" id="line2"></div>
+          <div class="step-dot" id="dot3">3</div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:33%"></div>
+        </div>
+
+        <!-- === STEP 1: Personal Info === -->
+        <div class="form-step active" id="step1">
+          <div class="form-heading">Who Are You?</div>
+          <div class="form-sub">Let's start with the basics — takes 30 seconds.</div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" placeholder="Samuel" autocomplete="given-name" />
+              <div class="field-error" id="firstNameErr">Please enter your first name.</div>
+            </div>
+            <div class="field-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" placeholder="Adeyemi" autocomplete="family-name" />
+              <div class="field-error" id="lastNameErr">Please enter your last name.</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+            <div class="field-error" id="emailErr">Please enter a valid email.</div>
+          </div>
+
+          <div class="field-group">
+            <label for="phone">Phone (Optional)</label>
+            <input type="tel" id="phone" placeholder="+1 (416) 000-0000" autocomplete="tel" />
+          </div>
+
+          <div class="field-group">
+            <label for="subgroup">Subgroup</label>
+            <select id="subgroup">
+              <option value="" disabled selected>Select your subgroup...</option>
+              <option value="Central East Subgroup A">Central East Subgroup A</option>
+              <option value="Central East Subgroup B">Central East Subgroup B</option>
+              <option value="Central Subgroup A">Central Subgroup A</option>
+              <option value="Central Subgroup B">Central Subgroup B</option>
+              <option value="West Subgroup A">West Subgroup A</option>
+              <option value="West Subgroup B">West Subgroup B</option>
+            </select>
+            <div class="field-error" id="subgroupErr">Please select your subgroup.</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-next" type="button" onclick="goToStep(2)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- === STEP 2: Your Role === -->
+        <div class="form-step" id="step2">
+          <div class="form-heading">Your Role</div>
+          <div class="form-sub">So we can tailor content that's actually relevant to where you are.</div>
+
+          <label>I am a...</label>
+          <div class="role-grid" id="roleGrid">
+            <label class="role-card">
+              <input type="radio" name="role" value="pastor" />
+              <div class="card-inner">
+                <div class="card-icon">⛪</div>
+                <div class="card-label">Pastor</div>
+              </div>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="coordinator" />
+              <div class="card-inner">
+                <div class="card-icon">📋</div>
+                <div class="card-label">Coordinator</div>
+              </div>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="cell-leader" />
+              <div class="card-inner">
+                <div class="card-icon">🏆</div>
+                <div class="card-label">Cell Leader</div>
+              </div>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="bible-study-teacher" />
+              <div class="card-inner">
+                <div class="card-icon">📖</div>
+                <div class="card-label">Bible Study Teacher</div>
+              </div>
+            </label>
+            <label class="role-card">
+              <input type="radio" name="role" value="member" />
+              <div class="card-inner">
+                <div class="card-icon">✨</div>
+                <div class="card-label">Member</div>
+              </div>
+            </label>
+          </div>
+          <div class="field-error" id="roleErr" style="margin-bottom:10px;">Please select your role.</div>
+
+          <!-- ✅ UPDATED: OPTIONAL + OTHER (TYPE) -->
+          <div class="field-group">
+            <label for="finGoal">
+              What's your #1 money goal right now?
+              <span style="color:var(--dimmer);font-weight:600;text-transform:none;letter-spacing:0;">(Optional)</span>
+            </label>
+            <select id="finGoal">
+              <option value="budgeting">Get my budgeting under control</option>
+              <option value="debt">Pay off debt</option>
+              <option value="saving">Build a savings habit</option>
+              <option value="word">Learn about God's word on my finances</option>
+              <option value="income">Grow my income</option>
+              <option value="mindset">Fix my money mindset</option>
+              <option value="giving">Give more</option>
+              <option value="other">Other (type it)</option>
+            </select>
+            <div class="field-error" id="goalErr">Please type your goal.</div>
+          </div>
+
+          <div class="field-group" id="finGoalOtherWrap" style="display:none;">
+            <label for="finGoalOther">Type your goal</label>
+            <input type="text" id="finGoalOther" placeholder="e.g. Learn how to invest wisely" />
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-back" type="button" onclick="goToStep(1)">← Back</button>
+            <button class="btn-next" type="button" onclick="goToStep(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- === STEP 3 === -->
+        <div class="form-step" id="step3">
+          <div class="form-heading">Confirm Your Spot</div>
+          <div class="form-sub">One last step — and you're in.</div>
+
+          <div class="field-group">
+            <label for="expectation">Anything specific you want to learn? (Optional)</label>
+            <textarea id="expectation" placeholder="e.g. How to start investing on a tight budget..."></textarea>
+          </div>
+
+          <div style="margin-top: 6px;">
+            <label class="check-group">
+              <input type="checkbox" id="agreeReminder" />
+              <span class="check-label">Send me weekly reminders before each session.</span>
+            </label>
+            <label class="check-group">
+              <input type="checkbox" id="agreeShare" />
+              <span class="check-label">I'm bringing at least one friend — the more the better.</span>
+            </label>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-back" type="button" onclick="goToStep(2)">← Back</button>
+            <button class="btn-submit" type="button" onclick="submitForm()">Secure My Spot ✓</button>
+          </div>
+        </div>
+
+        <!-- SUCCESS SCREEN -->
+        <div class="success-screen" id="successScreen">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">You're In!</div>
+          <p class="success-msg">
+            Your spot is confirmed. See you every Wednesday at 7PM CST.
+          </p>
+
+          <div class="success-detail" style="text-align:left;margin-bottom:18px;">
+            <strong>📅 Starts:</strong> Wednesday, February 18, 2026<br>
+            <strong>🕖 Time:</strong> 7:00 PM CST<br>
+            <strong>🔗 Zoom:</strong>
+            <a href="https://arizona.zoom.us/j/9780367559" target="_blank" style="color:var(--green);font-weight:700;text-decoration:none;">arizona.zoom.us/j/9780367559</a><br>
+            <strong>📲 Tip:</strong> Bookmark it now — see you Wednesday at 7PM CST.
+          </div>
+
+          <a href="https://arizona.zoom.us/j/9780367559" id="zoomJoinBtn" target="_blank" rel="noopener"
+             style="display:block;background:linear-gradient(135deg,#1aff5a 0%,#00c940 100%);color:#041a08;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:15px 24px;border-radius:8px;margin-bottom:12px;text-align:center;box-shadow:0 4px 20px rgba(26,255,90,0.25);">
+            🎥 Join on Zoom →
+          </a>
+
+          <p style="font-family:'Barlow',sans-serif;font-size:12px;color:var(--dimmer);margin:0;text-align:center;line-height:1.6;">
+            Same link every week · Feb 18 – Mar 25<br>
+            <a href="https://arizona.zoom.us/j/9780367559" id="zoomCopyLink" style="color:var(--green);text-decoration:none;font-size:11px;letter-spacing:1px;">Copy link</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ✅ Your Apps Script Web App URL (exec)
+    const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxt7mQTunINNrOKMCy5P2R8NbLnhiyrTK38RWEfmwMb577UhY7tQHHW9svgqOhSlCgKjg/exec";
+
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function goToStep(step) {
+      if (step > currentStep && !validateStep(currentStep)) return;
+
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+
+      if (step > currentStep) {
+        document.getElementById(`dot${currentStep}`).classList.remove('active');
+        document.getElementById(`dot${currentStep}`).classList.add('done');
+        document.getElementById(`dot${currentStep}`).textContent = '✓';
+        if (currentStep < totalSteps) document.getElementById(`line${currentStep}`).classList.add('done');
+      }
+
+      currentStep = step;
+
+      document.getElementById(`step${currentStep}`).classList.add('active');
+      document.getElementById(`dot${currentStep}`).classList.remove('done');
+      document.getElementById(`dot${currentStep}`).textContent = currentStep;
+      document.getElementById(`dot${currentStep}`).classList.add('active');
+
+      for (let i = currentStep + 1; i <= totalSteps; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        dot.classList.remove('done', 'active');
+        dot.textContent = i;
+      }
+      for (let i = currentStep; i < totalSteps; i++) {
+        document.getElementById(`line${i}`).classList.remove('done');
+      }
+
+      document.getElementById('progressFill').style.width = (currentStep / totalSteps) * 100 + '%';
+    }
+
+    function validateStep(step) {
+      let valid = true;
+
+      if (step === 1) {
+        const first = document.getElementById('firstName');
+        const last  = document.getElementById('lastName');
+        const email = document.getElementById('email');
+        const subgroup = document.getElementById('subgroup');
+
+        if (!first.value.trim()) { showErr('firstNameErr', first); valid = false; }
+        else hideErr('firstNameErr', first);
+
+        if (!last.value.trim()) { showErr('lastNameErr', last); valid = false; }
+        else hideErr('lastNameErr', last);
+
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRx.test(email.value.trim())) { showErr('emailErr', email); valid = false; }
+        else hideErr('emailErr', email);
+
+        if (!subgroup.value) { showErr('subgroupErr', subgroup); valid = false; }
+        else hideErr('subgroupErr', subgroup);
+      }
+
+      if (step === 2) {
+        const role = document.querySelector('input[name="role"]:checked');
+        const goal = document.getElementById('finGoal');
+        const other = document.getElementById('finGoalOther');
+
+        if (!role) { document.getElementById('roleErr').style.display = 'block'; valid = false; }
+        else { document.getElementById('roleErr').style.display = 'none'; }
+
+        // ✅ Goal is OPTIONAL now
+        hideErr('goalErr', goal);
+
+        // ✅ If "Other", require typed value
+        if (goal.value === 'other') {
+          if (!other.value.trim()) { showErr('goalErr', other); valid = false; }
+          else hideErr('goalErr', other);
+        } else {
+          hideErr('goalErr', other);
+        }
+      }
+
+      return valid;
+    }
+
+    function showErr(id, input) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'block';
+      if (input) input.classList.add('error');
+    }
+
+    function hideErr(id, input) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+      if (input) input.classList.remove('error');
+    }
+
+    function setButtonLoading(btn, loading) {
+      if (!btn) return;
+      btn.disabled = !!loading;
+      btn.style.opacity = loading ? "0.75" : "1";
+      btn.dataset.originalText = btn.dataset.originalText || btn.textContent;
+      btn.textContent = loading ? "Submitting..." : btn.dataset.originalText;
+    }
+
+    function buildPayload() {
+      const roleEl = document.querySelector('input[name="role"]:checked');
+
+      const goalSel = document.getElementById('finGoal').value;
+      const goalOther = (document.getElementById('finGoalOther')?.value || "").trim();
+
+      let finGoalFinal = goalSel;
+      if (!goalSel) finGoalFinal = "";               // skipped
+      if (goalSel === "other") finGoalFinal = goalOther || ""; // typed goal
+
+      return {
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName:  document.getElementById('lastName').value.trim(),
+        email:     document.getElementById('email').value.trim(),
+        phone:     document.getElementById('phone').value.trim(),
+        subgroup:  document.getElementById('subgroup').value,
+        role:      roleEl ? roleEl.value : "",
+        finGoal:   finGoalFinal,
+        expectation:   document.getElementById('expectation').value.trim(),
+        agreeReminder: document.getElementById('agreeReminder').checked,
+        agreeShare:    document.getElementById('agreeShare').checked,
+        source:        window.location.href,
+        userAgent:     navigator.userAgent
+      };
+    }
+
+    async function submitForm() {
+      if (!validateStep(1)) { goToStep(1); return; }
+      if (!validateStep(2)) { goToStep(2); return; }
+
+      const btn = document.querySelector('#step3 .btn-submit');
+      setButtonLoading(btn, true);
+
+      try {
+        const payload = buildPayload();
+
+        // ✅ IMPORTANT: Use text/plain to avoid CORS preflight with GAS
+        const res = await fetch(ENDPOINT_URL, {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) throw new Error(`Network error (HTTP ${res.status})`);
+
+        const data = await res.json().catch(() => null);
+        if (!data || !data.ok) {
+          const msg = (data && data.error) ? data.error : "Submission failed. Please try again.";
+          throw new Error(msg);
+        }
+
+        finalizeSuccessUI();
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || "Something went wrong. Please try again.");
+        setButtonLoading(btn, false);
+      }
+    }
+
+    function finalizeSuccessUI() {
+      document.getElementById('step3').classList.remove('active');
+      document.getElementById('stepsIndicator').style.display = 'none';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('successScreen').classList.add('active');
+    }
+
+    function showToast(msg) {
+      const existing = document.getElementById('_toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.id = '_toast';
+      toast.textContent = msg;
+      Object.assign(toast.style, {
+        position: 'fixed',
+        left: '50%',
+        bottom: '28px',
+        transform: 'translateX(-50%)',
+        background: 'rgba(10,20,12,0.96)',
+        border: '1px solid rgba(26,255,90,0.35)',
+        color: '#e8f5ea',
+        padding: '13px 20px',
+        borderRadius: '10px',
+        fontFamily: 'Barlow, Arial, sans-serif',
+        fontSize: '13px',
+        lineHeight: '1.5',
+        zIndex: '9999',
+        maxWidth: '90vw',
+        textAlign: 'center',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+        transition: 'opacity 0.3s ease'
+      });
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input',  () => el.classList.remove('error'));
+      el.addEventListener('change', () => el.classList.remove('error'));
+    });
+
+    // ✅ Show/hide Other goal textbox
+    const finGoalSelect = document.getElementById('finGoal');
+    const finGoalOtherWrap = document.getElementById('finGoalOtherWrap');
+    const finGoalOther = document.getElementById('finGoalOther');
+
+    finGoalSelect.addEventListener('change', () => {
+      const isOther = finGoalSelect.value === 'other';
+      finGoalOtherWrap.style.display = isOther ? 'block' : 'none';
+      if (!isOther) finGoalOther.value = '';
+    });
+
+    // Zoom copy
+    const ZOOM_URL = "https://arizona.zoom.us/j/9780367559";
+    function setZoomLinks(url) {
+      const joinBtn  = document.getElementById('zoomJoinBtn');
+      const copyLink = document.getElementById('zoomCopyLink');
+      if (joinBtn) joinBtn.href = url;
+
+      if (copyLink) {
+        copyLink.href = url;
+        copyLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          navigator.clipboard.writeText(url).then(() => {
+            copyLink.textContent = '✓ Copied!';
+            setTimeout(() => copyLink.textContent = 'Copy link', 2000);
+          }).catch(() => window.open(url, '_blank'));
+        });
+      }
+    }
+    setZoomLinks(ZOOM_URL);
+  </script>
+</body>
+</html>
