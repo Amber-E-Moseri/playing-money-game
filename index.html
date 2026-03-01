@@ -541,6 +541,22 @@
             <span class="value" style="color:var(--green);">Zoom</span>
           </div>
         </div>
+
+        <!-- ✅ ADD TO CALENDAR PILL -->
+        <div class="info-pill">
+          <div class="icon">🗓️</div>
+          <div>
+            <span class="label">Calendar</span>
+            <span class="value">
+              <a id="calendarPillLink"
+                 href="#"
+                 download
+                 style="color:var(--green);font-weight:700;text-decoration:none;">
+                Add to Calendar (.ics)
+              </a>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="trust-line">
@@ -735,6 +751,14 @@
             🎥 Join on Zoom →
           </a>
 
+          <!-- ✅ ADD TO CALENDAR BUTTON -->
+          <a href="#" id="calendarAddBtn"
+             download
+             rel="noopener"
+             style="display:block;background:transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:15px 24px;border-radius:8px;margin-bottom:12px;text-align:center;border:1.5px solid rgba(26,255,90,0.30);box-shadow:0 8px 32px rgba(0,0,0,0.20);">
+            🗓️ Add to Calendar →
+          </a>
+
           <p style="font-family:'Barlow',sans-serif;font-size:12px;color:var(--dimmer);margin:0;text-align:center;line-height:1.6;">
             Same link every week · Feb 18 – Mar 25<br>
             <a href="https://arizona.zoom.us/j/9780367559" id="zoomCopyLink" style="color:var(--green);text-decoration:none;font-size:11px;letter-spacing:1px;">Copy link</a>
@@ -749,6 +773,12 @@
   <script>
     // ✅ Your Apps Script Web App URL (exec)
     const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxt7mQTunINNrOKMCy5P2R8NbLnhiyrTK38RWEfmwMb577UhY7tQHHW9svgqOhSlCgKjg/exec";
+
+    // ✅ Zoom
+    const ZOOM_URL = "https://arizona.zoom.us/j/9780367559";
+
+    // ✅ Calendar (.ics) — use RAW github URL (required for direct download)
+    const ICS_URL = "https://raw.githubusercontent.com/Amber-E-Moseri/playing-money-game/main/playing-the-money-game.ics";
 
     let currentStep = 1;
     const totalSteps = 3;
@@ -967,7 +997,6 @@
     });
 
     // Zoom copy
-    const ZOOM_URL = "https://arizona.zoom.us/j/9780367559";
     function setZoomLinks(url) {
       const joinBtn  = document.getElementById('zoomJoinBtn');
       const copyLink = document.getElementById('zoomCopyLink');
@@ -985,6 +1014,15 @@
       }
     }
     setZoomLinks(ZOOM_URL);
+
+    // ✅ Calendar links (pill + success button)
+    function setCalendarLinks(url) {
+      const pill = document.getElementById('calendarPillLink');
+      const btn  = document.getElementById('calendarAddBtn');
+      if (pill) pill.href = url;
+      if (btn)  btn.href = url;
+    }
+    setCalendarLinks(ICS_URL);
   </script>
 </body>
 </html>
